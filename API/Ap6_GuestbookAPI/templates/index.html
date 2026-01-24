@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gastenboek</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📖 Gastenboek</h1>
+            <p class="subtitle">Laat een bericht achter!</p>
+        </header>
+
+        <!-- Formulier om nieuw bericht toe te voegen -->
+        <div class="form-container">
+            <h2>Nieuw Bericht</h2>
+            <form action="/add" method="POST">
+                <div class="form-group">
+                    <label for="naam">Je naam:</label>
+                    <input
+                        type="text"
+                        id="naam"
+                        name="naam"
+                        placeholder="Voer je naam in"
+                        required
+                        autocomplete="off"
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="bericht">Je bericht:</label>
+                    <textarea
+                        id="bericht"
+                        name="bericht"
+                        rows="4"
+                        placeholder="Schrijf hier je bericht..."
+                        required
+                    ></textarea>
+                </div>
+
+                <button type="submit">Bericht Toevoegen</button>
+            </form>
+        </div>
+
+        <!-- Overzicht van alle berichten -->
+        <div class="entries-container">
+            <h2>Alle Berichten ({{ entries|length }})</h2>
+
+            {% if entries %}
+                <div class="entries-list">
+                    {% for entry in entries|reverse %}
+                    <div class="entry-card">
+                        <div class="entry-header">
+                            <span class="entry-naam">👤 {{ entry.naam }}</span>
+                            <span class="entry-id">#{{ entry.id }}</span>
+                        </div>
+                        <div class="entry-bericht">
+                            {{ entry.bericht }}
+                        </div>
+                        <div class="entry-timestamp">
+                            🕒 {{ entry.timestamp.split('T')[0] }} om {{ entry.timestamp.split('T')[1].split('.')[0] }}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="no-entries">
+                    <p>Nog geen berichten. Wees de eerste!</p>
+                </div>
+            {% endif %}
+        </div>
+
+        <footer>
+            <div class="api-info">
+                <h3>🔧 REST API Endpoints</h3>
+                <ul>
+                    <li><code>GET /api/entries</code> - Alle entries ophalen</li>
+                    <li><code>GET /api/entries/&lt;id&gt;</code> - Specifieke entry ophalen</li>
+                    <li><code>POST /api/entries</code> - Nieuwe entry toevoegen</li>
+                    <li><code>DELETE /api/entries/&lt;id&gt;</code> - Entry verwijderen</li>
+                    <li><code>GET /api/stats</code> - Statistieken ophalen</li>
+                </ul>
+                <p>Zie <strong>README.md</strong> voor curl voorbeelden!</p>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>
