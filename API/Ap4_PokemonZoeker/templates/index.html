@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokemon Zoeker</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎮 Pokemon Zoeker</h1>
+            <p class="subtitle">Zoek informatie over je favoriete Pokemon!</p>
+        </header>
+
+        <div class="search-box">
+            <form method="POST" action="/">
+                <input
+                    type="text"
+                    name="pokemon_naam"
+                    placeholder="Voer Pokemon naam in (bijv. pikachu, charizard...)"
+                    autocomplete="off"
+                    autofocus
+                >
+                <button type="submit">Zoeken</button>
+            </form>
+        </div>
+
+        {% if error %}
+        <div class="error">
+            <p>❌ {{ error }}</p>
+        </div>
+        {% endif %}
+
+        {% if pokemon %}
+        <div class="pokemon-card">
+            <div class="pokemon-header">
+                <h2>{{ pokemon.naam }}</h2>
+                <span class="pokemon-id">#{{ pokemon.id }}</span>
+            </div>
+
+            <div class="pokemon-content">
+                <div class="pokemon-images">
+                    <div class="sprite-box">
+                        <img src="{{ pokemon.sprite }}" alt="{{ pokemon.naam }}">
+                        <p>Normal</p>
+                    </div>
+                    <div class="sprite-box">
+                        <img src="{{ pokemon.sprite_shiny }}" alt="{{ pokemon.naam }} Shiny">
+                        <p>Shiny</p>
+                    </div>
+                </div>
+
+                <div class="pokemon-info">
+                    <div class="info-section">
+                        <h3>Types</h3>
+                        <div class="types">
+                            {% for type in pokemon.types %}
+                            <span class="type type-{{ type.lower() }}">{{ type }}</span>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <div class="info-section">
+                        <h3>Eigenschappen</h3>
+                        <p><strong>Hoogte:</strong> {{ pokemon.hoogte }} m</p>
+                        <p><strong>Gewicht:</strong> {{ pokemon.gewicht }} kg</p>
+                    </div>
+
+                    <div class="info-section">
+                        <h3>Abilities</h3>
+                        <ul>
+                            {% for ability in pokemon.abilities %}
+                            <li>{{ ability }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stats-section">
+                <h3>Base Stats</h3>
+                <div class="stats">
+                    {% for stat in pokemon.stats %}
+                    <div class="stat-row">
+                        <span class="stat-name">{{ stat.naam }}</span>
+                        <div class="stat-bar-container">
+                            <div class="stat-bar" style="width: {{ (stat.waarde / 255) * 100 }}%"></div>
+                            <span class="stat-value">{{ stat.waarde }}</span>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <footer>
+            <p>Data van <a href="https://pokeapi.co" target="_blank">PokeAPI</a></p>
+        </footer>
+    </div>
+</body>
+</html>
