@@ -1,5 +1,16 @@
 # Ap2 – Graphhopper Directions API
 
+## Hoe werkt het: 
+
+Comment ça marche après 💡
+Le programme va vous demander :
+
+Vehicle profile : tapez car, bike, ou foot
+Starting Location : tapez une ville (ex: "Brussels")
+Destination : tapez une autre ville (ex: "Paris")
+Il affichera la distance et les directions !
+Pour quitter : tapez q
+
 ## Context
 Dit experiment maakt deel uit van het vak **DevOps** en is gebaseerd op
 **Lab 4.9.2 – Integrate a REST API in a Python Application** uit de NetAcad cursus.
