@@ -1,0 +1,38 @@
+---
+- hosts: nginxservers
+  become: yes
+  tasks:
+    - name: INSTALL NGINX
+      apt: name=nginx update_cache=yes state=latest
+
+    - name: START AND ENABLE NGINX
+      service: name=nginx state=started enabled=yes
+
+    - name: REMOVE DEFAULT NGINX PAGE
+      file:
+        path: /var/www/html/index.nginx-debian.html
+        state: absent
+
+    - name: COPY WEBSITE FILES
+      copy:
+        src: files/
+        dest: /var/www/html/
+        owner: www-data
+        group: www-data
+        mode: '0644'
+      notify:
+        - RESTART NGINX
+
+    - name: CONFIGURE NGINX CUSTOM SETTINGS
+      template:
+        src: templates/nginx.conf.j2
+        dest: /etc/nginx/sites-available/default
+        owner: root
+        group: root
+        mode: '0644'
+      notify:
+        - RESTART NGINX
+
+  handlers:
+    - name: RESTART NGINX
+      service: name=nginx state=restarted

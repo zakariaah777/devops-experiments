@@ -1,0 +1,2 @@
+[nginxservers]
+192.0.2.4 ansible_ssh_user=devasc ansible_ssh_pass=Cisco123!
