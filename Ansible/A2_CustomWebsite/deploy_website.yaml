@@ -1,0 +1,28 @@
+---
+- hosts: webservers
+  become: yes
+  tasks:
+    - name: INSTALL APACHE2
+      apt: name=apache2 update_cache=yes state=latest
+
+    - name: ENABLE APACHE2 SERVICE
+      service: name=apache2 state=started enabled=yes
+
+    - name: REMOVE DEFAULT INDEX.HTML
+      file:
+        path: /var/www/html/index.html
+        state: absent
+
+    - name: COPY WEBSITE FILES
+      copy:
+        src: files/
+        dest: /var/www/html/
+        owner: www-data
+        group: www-data
+        mode: '0644'
+      notify:
+        - RESTART APACHE2
+
+  handlers:
+    - name: RESTART APACHE2
+      service: name=apache2 state=restarted
