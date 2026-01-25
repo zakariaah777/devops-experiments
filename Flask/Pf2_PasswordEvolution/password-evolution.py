@@ -13,8 +13,22 @@ def index():
 
 ######################################### Plain Text #########################################################
 
-@app.route('/signup/v1', methods=['POST'])
+@app.route('/signup/v1', methods=['GET', 'POST'])
 def signup_v1():
+    if request.method == 'GET':
+        return '''
+            <html>
+            <body>
+                <h2>Signup v1 (Plaintext Password - ONVEILIG!)</h2>
+                <form method="POST">
+                    Username: <input type="text" name="username"><br><br>
+                    Password: <input type="password" name="password"><br><br>
+                    <input type="submit" value="Sign Up">
+                </form>
+            </body>
+            </html>
+        '''
+
     conn = sqlite3.connect(db_name)
     c = conn.cursor()
     c.execute('''CREATE TABLE IF NOT EXISTS USER_PLAIN
@@ -60,6 +74,20 @@ def login_v1():
 
 @app.route('/signup/v2', methods=['GET', 'POST'])
 def signup_v2():
+    if request.method == 'GET':
+        return '''
+            <html>
+            <body>
+                <h2>Signup v2 (Hashed Password)</h2>
+                <form method="POST">
+                    Username: <input type="text" name="username"><br><br>
+                    Password: <input type="password" name="password"><br><br>
+                    <input type="submit" value="Sign Up">
+                </form>
+            </body>
+            </html>
+        '''
+
     conn = sqlite3.connect(db_name)
     c = conn.cursor()
     c.execute('''CREATE TABLE IF NOT EXISTS USER_HASH
