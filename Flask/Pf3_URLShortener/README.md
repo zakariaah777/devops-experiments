@@ -1,42 +1,63 @@
 # Pf3 – URL Shortener Microservice
 
 ## Wat doet dit?
-Een microservice die lange URLs verkort naar korte links (zoals bit.ly).
+Verkort lange URLs naar korte links (zoals bit.ly). Eigen microservice experiment.
 
-## Hoe run je dit?
-
+## Stap 1: Ga naar de directory
 ```bash
 cd Flask/Pf3_URLShortener
+```
+
+## Stap 2: Installeer Flask (als je het nog niet hebt)
+```bash
+pip3 install flask
+```
+
+## Stap 3: Start de app
+```bash
 python3 url-shortener.py
 ```
 
-## Hoe test je dit?
+Je ziet:
+```
+* Running on http://0.0.0.0:5000
+* Debug mode: on
+```
 
-**Browser:**
-- Ga naar `http://0.0.0.0:5000`
-- Vul een lange URL in
-- Klik "Verkort URL"
-- Gebruik de korte URL om te redirecten
+## Stap 4: Test de app
 
-**Met curl:**
+### Optie A: Browser
+1. Ga naar `http://0.0.0.0:5000`
+2. Vul een lange URL in (bijv. `https://www.google.com/search?q=test`)
+3. Klik "Verkort URL"
+4. Je krijgt een korte URL zoals: `http://0.0.0.0:5000/aB3xY2`
+5. Klik op de korte URL om te testen
+6. Je wordt doorgestuurd naar de originele URL!
+
+### Optie B: Curl (open nieuwe terminal)
 ```bash
+# Terminal 1: server draait
+# Terminal 2: test met curl
+
 # Verkort een URL
 curl -X POST -F 'url=https://www.google.com' http://0.0.0.0:5000/shorten
 
-# Test de korte URL (vervang ABC123 met jouw code)
-curl -L http://0.0.0.0:5000/ABC123
+# Je krijgt bijv: Short URL: http://0.0.0.0:5000/eYXOOx
 
-# Bekijk stats
-curl http://0.0.0.0:5000/stats/ABC123
+# Test de redirect
+curl -L http://0.0.0.0:5000/eYXOOx
+
+# Bekijk stats (hoeveel clicks)
+curl http://0.0.0.0:5000/stats/eYXOOx
 ```
 
-## Wat zie je?
-- Je krijgt een korte URL terug (bijv. `http://0.0.0.0:5000/aB3xY2`)
-- Als je de korte URL bezoekt, word je doorgestuurd naar de originele URL
-- Elke click wordt geteld
-- Stats tonen hoeveel keer de link is gebruikt
+## Stap 5: Stoppen
+Druk `Ctrl+C` in de terminal waar de app draait.
 
-## Stoppen
-```bash
-# Druk Ctrl+C in de terminal waar de server draait
-```
+---
+
+## Wat doet het?
+- Verkort lange URLs naar 6-karakter codes
+- Slaat alles op in SQLite database (urls.db)
+- Telt hoeveel keer elke link geklikt wordt
+- Toont statistieken per link

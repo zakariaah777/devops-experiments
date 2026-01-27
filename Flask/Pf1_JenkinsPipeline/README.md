@@ -1,28 +1,47 @@
 # Pf1 – Jenkins CI/CD Sample App
 
 ## Wat doet dit?
-Simpele Flask app die je IP-adres toont. Gebruikt voor Jenkins CI/CD pipeline lab (Lab 6.3.6).
+Flask app die je IP-adres toont. Voor Jenkins CI/CD pipeline lab.
 
-## Uitvoeren
-
+## Stap 1: Ga naar de directory
 ```bash
 cd Flask/Pf1_JenkinsPipeline
+```
 
-# Installeer Flask
+## Stap 2: Installeer Flask (als je het nog niet hebt)
+```bash
 pip3 install flask
+```
 
-# Run de app
+## Stap 3: Start de app
+```bash
 python3 sample_app.py
 ```
 
-**Open browser:** `http://localhost:5050`
+Je ziet:
+```
+* Running on http://0.0.0.0:5050
+```
 
-**Wat je ziet:** "You are calling me from 127.0.0.1" op light steel blue achtergrond
+## Stap 4: Test de app
 
-**Stop:** `Ctrl+C`
+**In browser:**
+- Ga naar `http://0.0.0.0:5050`
+- Je ziet: "You are calling me from 127.0.0.1"
+
+**Of met curl (nieuwe terminal):**
+```bash
+curl http://0.0.0.0:5050
+```
+
+## Stap 5: Stoppen
+Druk `Ctrl+C` in de terminal waar de app draait.
+
+---
 
 ## Met Docker (optioneel)
 
+**Start:**
 ```bash
 bash ./sample-app.sh
 ```
@@ -32,6 +51,3 @@ bash ./sample-app.sh
 docker stop samplerunning
 docker rm samplerunning
 ```
-
-## Doel
-Deze app is voor het Jenkins CI/CD lab waar je leert automatisch code te builden, testen en deployen.
