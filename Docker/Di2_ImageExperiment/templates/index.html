@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Di2 - Image Experiment</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🖼️ Image Experiment</h1>
+            <p class="subtitle">Upload een afbeelding en pas filters toe</p>
+        </header>
+
+        <main>
+            <form action="/upload" method="post" enctype="multipart/form-data" class="upload-form">
+                <div class="form-group">
+                    <label for="file">Kies een afbeelding:</label>
+                    <input type="file" id="file" name="file" accept="image/*" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="filter">Selecteer een filter:</label>
+                    <select id="filter" name="filter" required>
+                        <optgroup label="Basis filters">
+                            <option value="original">Origineel (geen filter)</option>
+                            <option value="grayscale">Grijswaarden</option>
+                            <option value="sepia">Sepia</option>
+                        </optgroup>
+
+                        <optgroup label="Effecten">
+                            <option value="blur">Vervagen</option>
+                            <option value="sharpen">Verscherpen</option>
+                            <option value="smooth">Glad maken</option>
+                            <option value="emboss">Reliëf</option>
+                            <option value="contour">Contour</option>
+                            <option value="detail">Detail verbeteren</option>
+                            <option value="edge_enhance">Randen versterken</option>
+                        </optgroup>
+
+                        <optgroup label="Aanpassingen">
+                            <option value="brightness">Helderheid (+50%)</option>
+                            <option value="contrast">Contrast (+50%)</option>
+                        </optgroup>
+
+                        <optgroup label="Transformaties">
+                            <option value="rotate90">Roteer 90°</option>
+                            <option value="rotate180">Roteer 180°</option>
+                            <option value="rotate270">Roteer 270°</option>
+                            <option value="flip_horizontal">Horizontaal spiegelen</option>
+                            <option value="flip_vertical">Verticaal spiegelen</option>
+                            <option value="thumbnail">Thumbnail (200x200)</option>
+                        </optgroup>
+                    </select>
+                </div>
+
+                <button type="submit" class="submit-btn">Verwerk afbeelding</button>
+            </form>
+
+            <div class="info-box">
+                <h3>ℹ️ Informatie</h3>
+                <ul>
+                    <li>Ondersteunde formaten: PNG, JPG, JPEG, GIF, BMP, WEBP</li>
+                    <li>Maximale bestandsgrootte: 16 MB</li>
+                    <li>De verwerkte afbeelding wordt automatisch gedownload</li>
+                    <li>Originele bestanden worden niet opgeslagen</li>
+                </ul>
+            </div>
+        </main>
+
+        <footer>
+            <p>Di2 - Docker Image Experiment | DevOps Experimenten</p>
+        </footer>
+    </div>
+
+    <script>
+        // Preview image before upload
+        document.getElementById('file').addEventListener('change', function(e) {
+            const fileName = e.target.files[0]?.name;
+            if (fileName) {
+                console.log('Geselecteerde bestand:', fileName);
+            }
+        });
+    </script>
+</body>
+</html>
