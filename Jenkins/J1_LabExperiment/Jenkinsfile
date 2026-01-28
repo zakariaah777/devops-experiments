@@ -1,0 +1,37 @@
+// Jenkinsfile voor Sample App CI/CD Pipeline
+// Experiment J1 - Jenkins CI/CD Lab
+
+node {
+    stage('Preparation') {
+        // Stop en verwijder oude containers indien aanwezig
+        // catchError zorgt dat de pipeline doorgaat ook al faalt deze stap
+        catchError(buildResult: 'SUCCESS') {
+            sh 'docker stop samplerunning'
+            sh 'docker rm samplerunning'
+        }
+        echo 'Preparation stage completed'
+    }
+
+    stage('Build') {
+        // Voer de BuildAppJob uit
+        echo 'Starting build stage...'
+        build 'BuildAppJob'
+        echo 'Build stage completed successfully'
+    }
+
+    stage('Test') {
+        // Voer de TestAppJob uit
+        echo 'Starting test stage...'
+        build 'TestAppJob'
+        echo 'Test stage completed successfully'
+    }
+
+    stage('Report') {
+        // Deze stage kan gebruikt worden voor rapportage
+        echo '========================================='
+        echo 'CI/CD Pipeline completed successfully!'
+        echo 'Sample app is built, tested and running'
+        echo 'Access the app at: http://localhost:5050'
+        echo '========================================='
+    }
+}
