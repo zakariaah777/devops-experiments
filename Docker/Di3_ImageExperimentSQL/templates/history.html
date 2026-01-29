@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Geschiedenis - Di3 Image Experiment SQL</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container history-container">
+        <header>
+            <h1>📊 Verwerkings Geschiedenis</h1>
+            <p class="subtitle">Statistieken en geschiedenis van verwerkte afbeeldingen</p>
+            <nav class="header-nav">
+                <a href="/" class="nav-link">Upload</a>
+                <a href="/history" class="nav-link active">Geschiedenis</a>
+            </nav>
+        </header>
+
+        <main>
+            <!-- Statistics Section -->
+            <section class="stats-section">
+                <h2>📈 Statistieken</h2>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number">{{ stats.total }}</div>
+                        <div class="stat-label">Totaal Verwerkingen</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">{{ "%.2f"|format(stats.total_size / 1024 / 1024) }} MB</div>
+                        <div class="stat-label">Totaal Verwerkt</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">{{ stats.filter_stats|length }}</div>
+                        <div class="stat-label">Gebruikte Filters</div>
+                    </div>
+                </div>
+
+                <!-- Filter Usage Chart -->
+                <div class="filter-stats">
+                    <h3>🎨 Populairste Filters</h3>
+                    {% if stats.filter_stats %}
+                    <div class="filter-bars">
+                        {% for filter in stats.filter_stats[:10] %}
+                        <div class="filter-bar-item">
+                            <div class="filter-name">{{ filter.filter_type }}</div>
+                            <div class="filter-bar-container">
+                                <div class="filter-bar" style="width: {{ (filter.count / stats.total * 100)|int }}%">
+                                    <span class="filter-count">{{ filter.count }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <p class="no-data">Nog geen filters gebruikt</p>
+                    {% endif %}
+                </div>
+            </section>
+
+            <!-- History Section -->
+            <section class="history-section">
+                <h2>📝 Recente Verwerkingen (laatste 50)</h2>
+                {% if history %}
+                <div class="history-table-wrapper">
+                    <table class="history-table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Bestandsnaam</th>
+                                <th>Filter</th>
+                                <th>Grootte</th>
+                                <th>Tijdstip</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in history %}
+                            <tr>
+                                <td>{{ item.id }}</td>
+                                <td class="filename">{{ item.filename }}</td>
+                                <td><span class="filter-badge">{{ item.filter_type }}</span></td>
+                                <td>{{ "%.2f"|format(item.file_size / 1024) }} KB</td>
+                                <td class="timestamp">{{ item.timestamp }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="no-data-box">
+                    <p>Nog geen verwerkingen</p>
+                    <a href="/" class="btn-back">Upload je eerste afbeelding</a>
+                </div>
+                {% endif %}
+            </section>
+
+            <div class="back-button-container">
+                <a href="/" class="back-button">← Terug naar Upload</a>
+            </div>
+        </main>
+
+        <footer>
+            <p>Di3 - Docker Image Experiment SQL | DevOps Experimenten</p>
+        </footer>
+    </div>
+</body>
+</html>
